@@ -1,0 +1,18 @@
+[package]
+name = "htn-planner"
+description = "Bounded deterministic hierarchical task planning"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+blake3.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+test-tag.workspace = true
+
+[lints]
+workspace = true

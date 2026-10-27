@@ -1,0 +1,5 @@
+(:domain packaged_frontend top_level_domain
+  (:method (select ?inp_unused) top_level_method
+    (emit_candidate
+      (candidate ?value)
+      ((!emit ?value)))))

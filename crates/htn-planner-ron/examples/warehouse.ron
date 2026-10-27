@@ -1,0 +1,244 @@
+(
+    version: 2,
+    name: "warehouse",
+    entries: [
+        "ship",
+        "nothing",
+    ],
+    queries: [
+        (
+            name: "taken",
+            parameters: [
+                Ref("worker", "Worker",),
+            ],
+            outputs: [],
+            result: [],
+            locals: [
+                Record("role", "Role",),
+            ],
+            condition: Fact(
+                name: "assigned",
+                arguments: [
+                    Var("worker",),
+                    Var("role",),
+                ],
+            ),
+        ),
+        (
+            name: "candidate",
+            parameters: [
+                Record("role", "Role",),
+            ],
+            outputs: [
+                Ref("Worker",),
+            ],
+            locals: [
+                Ref("worker", "Worker",),
+            ],
+            condition: And([
+                Fact(
+                    name: "eligible",
+                    arguments: [
+                        Var("worker",),
+                        Var("role",),
+                    ],
+                ),
+                Not(Derived(
+                    name: "taken",
+                    arguments: [
+                        Var("worker",),
+                    ],
+                    outputs: [],
+                ),),
+            ],),
+            result: [
+                Var("worker",),
+            ],
+        ),
+    ],
+    tasks: [
+        (
+            name: "ship",
+            parameters: [
+                Ref("parcel", "Parcel",),
+            ],
+            methods: [
+                (
+                    name: "allocate",
+                    steps: [
+                        Task(
+                            name: "role",
+                            arguments: [
+                                Var("parcel",),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("front",),
+                                    ],
+                                ),),
+                            ],
+                        ),
+                        Task(
+                            name: "role",
+                            arguments: [
+                                Var("parcel",),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("left",),
+                                    ],
+                                ),),
+                            ],
+                        ),
+                        Task(
+                            name: "role",
+                            arguments: [
+                                Var("parcel",),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("right",),
+                                    ],
+                                ),),
+                            ],
+                        ),
+                        Condition(Not(Fact(
+                            name: "assigned",
+                            arguments: [
+                                Literal(Ref(
+                                    type_name: "Worker",
+                                    key: 1,
+                                ),),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("front",),
+                                    ],
+                                ),),
+                            ],
+                        ),),),
+                        Effect(
+                            name: "release",
+                            arguments: [
+                                Literal(Ref(
+                                    type_name: "Worker",
+                                    key: 9,
+                                ),),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("bench",),
+                                    ],
+                                ),),
+                            ],
+                        ),
+                        Condition(Not(Fact(
+                            name: "assigned",
+                            arguments: [
+                                Literal(Ref(
+                                    type_name: "Worker",
+                                    key: 9,
+                                ),),
+                                Literal(Record(
+                                    type_name: "Role",
+                                    fields: [
+                                        Symbol("bench",),
+                                    ],
+                                ),),
+                            ],
+                        ),),),
+                        Defer(
+                            name: "choose_bay",
+                            arguments: [
+                                Var("parcel",),
+                            ],
+                        ),
+                    ],
+                    locals: [],
+                ),
+            ],
+        ),
+        (
+            name: "role",
+            parameters: [
+                Ref("parcel", "Parcel",),
+                Record("role", "Role",),
+            ],
+            methods: [
+                (
+                    name: "assign",
+                    locals: [
+                        Ref("worker", "Worker",),
+                    ],
+                    steps: [
+                        Condition(Derived(
+                            name: "candidate",
+                            arguments: [
+                                Var("role",),
+                            ],
+                            outputs: [
+                                Var("worker",),
+                            ],
+                        ),),
+                        Effect(
+                            name: "claim",
+                            arguments: [
+                                Var("worker",),
+                                Var("role",),
+                            ],
+                        ),
+                        Action(
+                            name: "assign",
+                            arguments: [
+                                Var("parcel",),
+                                Var("worker",),
+                                Var("role",),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+        (
+            name: "choose_bay",
+            parameters: [
+                Ref("parcel", "Parcel",),
+            ],
+            methods: [
+                (
+                    name: "fresh",
+                    locals: [
+                        Record("bay", "Bay",),
+                    ],
+                    steps: [
+                        Query(
+                            name: "ready",
+                            arguments: [
+                                Var("parcel",),
+                                Var("bay",),
+                            ],
+                        ),
+                        Action(
+                            name: "deliver",
+                            arguments: [
+                                Var("parcel",),
+                                Var("bay",),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+        (
+            name: "nothing",
+            parameters: [],
+            methods: [
+                (
+                    name: "complete",
+                    steps: [],
+                    locals: [],
+                ),
+            ],
+        ),
+    ],
+)

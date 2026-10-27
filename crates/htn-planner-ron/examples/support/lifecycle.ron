@@ -1,0 +1,65 @@
+(
+    version: 2,
+    name: "lifecycle",
+    entries: [
+        "entry",
+    ],
+    tasks: [
+        (
+            name: "entry",
+            parameters: [
+                Int("job",),
+            ],
+            methods: [
+                (
+                    name: "prepare",
+                    steps: [
+                        Action(
+                            name: "prepare",
+                            arguments: [
+                                Var("job",),
+                            ],
+                        ),
+                        Defer(
+                            name: "follow",
+                            arguments: [
+                                Var("job",),
+                            ],
+                        ),
+                    ],
+                    locals: [],
+                ),
+            ],
+        ),
+        (
+            name: "follow",
+            parameters: [
+                Int("job",),
+            ],
+            methods: [
+                (
+                    name: "fresh",
+                    locals: [
+                        Int("worker",),
+                    ],
+                    steps: [
+                        Query(
+                            name: "ready",
+                            arguments: [
+                                Var("job",),
+                                Var("worker",),
+                            ],
+                        ),
+                        Action(
+                            name: "work",
+                            arguments: [
+                                Var("job",),
+                                Var("worker",),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)

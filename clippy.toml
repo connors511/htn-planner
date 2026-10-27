@@ -1,0 +1,9 @@
+# Test failures are reported through the test harness; assertions may use these
+# operations without weakening the production-code lint policy.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-print-in-tests = true
+# A 300-line function warrants review; the default 100-line threshold catches
+# many cohesive mappings and adapters without improving their readability.
+too-many-lines-threshold = 300

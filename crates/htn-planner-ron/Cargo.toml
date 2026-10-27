@@ -1,0 +1,19 @@
+[package]
+name = "htn-planner-ron"
+description = "RON admission for deterministic hierarchical task planning"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+htn-planner.workspace = true
+ron.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+test-tag.workspace = true
+
+[lints]
+workspace = true

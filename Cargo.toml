@@ -1,0 +1,59 @@
+[workspace]
+members = ["crates/htn-planner", "crates/htn-planner-ron"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/connors511/htn-planner"
+
+[workspace.dependencies]
+htn-planner = { version = "=0.1.0", path = "crates/htn-planner", default-features = false }
+blake3 = { version = "=1.8.2", default-features = false }
+ron = { version = "=0.10.1", default-features = false }
+serde = { version = "=1.0.228", default-features = false, features = ["alloc", "derive"] }
+test-tag = { version = "=0.1.6" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unused_must_use = "deny"
+unfulfilled_lint_expectations = "deny"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
+let_underscore_must_use = "deny"
+needless_collect = "deny"
+missing_const_for_fn = "deny"
+redundant_clone = "deny"
+significant_drop_tightening = "deny"
+significant_drop_in_scrutinee = "deny"
+suspicious_operation_groupings = "deny"
+branches_sharing_code = "deny"
+derive_partial_eq_without_eq = "deny"
+equatable_if_let = "deny"
+iter_on_single_items = "deny"
+iter_with_drain = "deny"
+needless_pass_by_ref_mut = "deny"
+option_if_let_else = "deny"
+or_fun_call = "deny"
+string_lit_as_bytes = "deny"
+trait_duplication_in_bounds = "deny"
+too_long_first_doc_paragraph = "deny"
+tuple_array_conversions = "deny"
+unnecessary_struct_initialization = "deny"
+useless_let_if_seq = "deny"
+use_self = "deny"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
